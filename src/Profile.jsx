@@ -124,27 +124,31 @@ const Profile = () => {
             <Form.Control type="text" placeholder="Enter username" value={profile.username} disabled={true} />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>School</Form.Label>
-            <Form.Control type="text" placeholder="Enter school" value={profile.school_name} disabled={true} />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Programme</Form.Label>
-            <Form.Control type="text" placeholder="Enter programme" value={profile.programme_name} disabled={true} />
-          </Form.Group>
-          <Form.Group className="mb-3">
             <Form.Label>Role</Form.Label>
             <Form.Control type="text" placeholder="Enter role" value={profile.role} disabled={true} />
           </Form.Group>
+          {profile.role !== "Administrator" && (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>School</Form.Label>
+                <Form.Control type="text" placeholder="Enter school" value={profile.school_name} disabled={true} />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Programme</Form.Label>
+                <Form.Control type="text" placeholder="Enter programme" value={profile.programme_name} disabled={true} />
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Year started</Form.Label>
-            <Form.Control type="text" placeholder="Enter year started" value={profile.years?.year_started} disabled={true} />
-          </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Year started</Form.Label>
+                <Form.Control type="text" placeholder="Enter year started" value={profile.years?.year_started} disabled={true} />
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Year finished</Form.Label>
-            <Form.Control type="text" placeholder="Enter year finished" value={profile.years?.year_finished} disabled={true} />
-          </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Year finished</Form.Label>
+                <Form.Control type="text" placeholder="Enter year finished" value={profile.years?.year_finished} disabled={true} />
+              </Form.Group>
+            </>
+          )}
 
           <h3 className="mt-5">Personal details</h3>
           <Form.Group className="mb-3">

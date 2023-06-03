@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { createClient } from "@supabase/supabase-js";
 import bcrypt from "bcryptjs";
@@ -9,7 +9,8 @@ const supabaseUrl = "https://eczgrwcooijbnmjkjtha.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjemdyd2Nvb2lqYm5tamtqdGhhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4NTQ2NzAwOCwiZXhwIjoyMDAxMDQzMDA4fQ.HXaQSDVB9CrSJ7Sbl1IK4YHDn_VkKYnO1or7-dFn7uk";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const Login = () => {
+const Login = ({ setLoggedIn }) => {
+  const navigate = useNavigate();
   const { profile, setProfile } = useProfile();
 
   const [username, setUsername] = useState("");
@@ -42,10 +43,25 @@ const Login = () => {
 
     const match = bcrypt.compareSync(password, user[0].password_hash);
 
+    //find user role
+    const { data: role, error: roleError } = await supabase.from("user_roles").select("role_id").eq("user_id", user[0].user_id).single();
+
+    if (roleError) {
+      console.log("error");
+      setAlertVariant("danger");
+      setAlertMessage("An error occurred while logging in!");
+      setShowAlert(true);
+      return;
+    }
+
+    console.log(role);
+
     if (match) {
       console.log("password correct!");
       console.log(user[0].user_id);
-      setProfile({ id: user[0].user_id, username: user[0].username });
+      setProfile({ id: user[0].user_id, username: user[0].username, role_id: role.role_id });
+      setLoggedIn(true);
+      navigate("/profile");
       setAlertVariant("success");
       setAlertMessage("Logged in successfully!");
       setShowAlert(true);
